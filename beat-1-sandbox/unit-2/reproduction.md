@@ -15,8 +15,7 @@ label is not graded.
 
 **GitHub username**
 
-[Your GitHub username, exactly as it appears on your profile — no `@`, no profile URL. Your
-comments upstream are identified by this name.]
+ShalomDee
 
 ---
 
@@ -24,16 +23,48 @@ comments upstream are identified by this name.]
 
 **Claim comment**
 
-[Link to the comment where you claimed the issue. Use the comment's own permalink, not the
-issue page on its own. **Then paste the text of that comment underneath the link** — the
-pasted text is what this field is graded on, so copy across what you actually posted.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60#issuecomment-5878033936
+I’d like to work on this issue. I’ll reproduce the crash locally and post a report with my environment, steps, and observed output.
 
 **Reproduction comment**
 
-[Link to the comment where you posted your reproduction. It must record the environment
-(OS, relevant versions, code state), steps a stranger could follow, and what you observed.
-**Then paste the text of that comment underneath the link** — the pasted text is what this
-field is graded on, so copy across what you actually posted.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/60#issuecomment-5878037027
+I set up the repository using `make setup` following `docs/SETUP.md` and reproduced issue #60 on Windows at commit `f89c06f`.
+
+Environment:
+- Windows 10.0.26200.9457
+- Python 3.12.3
+- pytest 9.1.1
+
+Command used:
+
+```.venv/Scripts/python -m pytest tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text -vv --runxfail```
+
+The test uses:
+```
+feedback = "Has Python skills"
+context_chunks = [{"text": None}]
+score = checker.check(feedback, context_chunks)
+```
+
+Expected behavior:
+`FaithfulnessChecker.check()` should handle a context chunk whose text value is None without crashing and return a float between `0.0` and `1.0`.
+
+Observed behavior:
+```
+E   TypeError: sequence item 0: expected str instance, NoneType found
+
+rag\evaluator\faithfulness_checker.py:38: TypeError
+
+FAILED tests/unit/test_faithfulness_checker.py::TestFaithfulnessChecker::test_none_context_chunk_text
+```
+The feedback string differs from the issue example, but the failure occurs while constructing `context_text` before the scoring logic, so this does not change the reproduced behavior.
+
+The exception occurs at:
+```context_text = " ".join([chunk.get("text", "") for chunk in context_chunks])```
+
+
+Running the test without `--runxfail` reports the existing regression test as `XFAIL`.
 
 ## Eval iterations
 
@@ -42,28 +73,21 @@ fields.
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+18/20 → 19/20 → 20/20
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+`pkg-20`: In my 19/20 run, my rubric returned `accept` while the gold label was `reject`. The package belonged to the disclosure category, and my original `repo-conventions` check mentioned required AI disclosure but did not make the absence of that disclosure an explicit failure condition. I revised the check so that when a repository requires AI-assistance disclosure, missing that disclosure fails the package. After the revision, my rubric returned `reject`, matching the gold label.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/repro-check/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+`| repo-conventions | The claim comment and repro report, read against the repo-facts block and any applicable CONTRIBUTING, README, AGENTS.md, issue template, code-of-conduct, or stated disclosure policy identified in the evidence guide. | Pass if the comments follow the repository's stated contribution and communication requirements, including any required AI-assistance disclosure, and do not omit a convention that the repo explicitly requires for this kind of contribution. When the repo explicitly requires disclosure of AI assistance, pass only if the claim comment or repro report contains an explicit statement that AI assistance was used and describes that assistance to the level required by the repo's policy. If the repo requires disclosure and no such statement appears, fail rather than mark unclear. | required |`
+
+I revised this check because my earlier wording recognized disclosure requirements but was not specific enough about how to grade a package that omitted the required disclosure. I initially made the revision too strict by requiring the specific AI tool to be named, which caused `pkg-07` to incorrectly reject even though its disclosure satisfied the repository policy. I changed the check again so that it follows the level of disclosure the repository actually requires rather than inventing an additional requirement.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+Making the disclosure rule more explicit fixed `pkg-20`, but my first revision was too strict and caused `pkg-07`, a valid clear-accept package, to reject. I used `pkg-07` as a canary alongside `pkg-20` and revised the check so it requires disclosure only to the level stated by the repository's own policy. The final full run returned 20/20, showing that the change fixed the disclosure case without changing the expected result for `pkg-07`.
 
 ---
 
