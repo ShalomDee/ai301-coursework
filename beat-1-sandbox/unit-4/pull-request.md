@@ -15,7 +15,7 @@ label is not graded.
 
 **Pull request**
 
-https://github.com/ShalomDee/pathreview-ai301-fa26-s1/pull/1
+https://github.com/codepath/pathreview-ai301-fa26-s1/pull/152
 
 **Branch**
 
