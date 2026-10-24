@@ -55,10 +55,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built my issue-scout and improved how it checks maintainer support for outside contributors**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I built an issue-scout that searches GitHub using my fit profile, ranks the results, and grades the top five against my rubric. My first scan surfaced brand-new repositories, hackathon projects, and bounty issues because the rubric did not check whether projects were established. I added a repository-quality check and refined it to require two recently active human maintainers and evidence that they reviewed or merged outside contributions, rather than relying on stars or template files. Grading 17 candidates from the Issue Selection site then produced two accepted picks, kaoto#2451 and p5.js-website#705.
 
 **Unit 6: [one line on the tool work]**
 
