@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Zotero page UX: smoother collection selection and friendlier sync feedback (slice 3: group selection inline)
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,10 +8,9 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Student:** Shalom Donga
+**GitHub Username:** ShalomDee
+**Issue:** https://github.com/LearningCircuit/local-deep-research/issues/4961
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -59,11 +58,9 @@ one in the week it belongs to.
 
 I built an issue-scout that searches GitHub using my fit profile, ranks the results, and grades the top five against my rubric. My first scan surfaced brand-new repositories, hackathon projects, and bounty issues because the rubric did not check whether projects were established. I added a repository-quality check and refined it to require two recently active human maintainers and evidence that they reviewed or merged outside contributions, rather than relying on stars or template files. Grading 17 candidates from the Issue Selection site then produced two accepted picks, kaoto#2451 and p5.js-website#705.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Set up a voice guard and documented the local-deep-research repo**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I combined my three voice guides into one, added rules for claiming issues, asking questions, and following up, and set up the voice guard as a Claude Code hook. My draft issue claim passed both the manual voice check and repro-check. The guard initially had problems on Windows because it used python3, couldn't find the claude command, and only checked Bash commands, leaving PowerShell unchecked. I fixed these problems and tested both Bash and PowerShell, confirming that the guard blocked posts through either tool. I also found that the guard gave different results for the same claim, so I rewrote it to focus on my next step and checked it twice. Finally, I created CLAUDE.local.md with the repo's contribution rules, the Zotero group-picker code and tests, Windows setup instructions, and a warning that the owner's open PR #6762 changes the same page.
 
 **Unit 7: [one line on the tool work]**
 
@@ -79,24 +76,24 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+My scout found no acceptable issues in four searches. In each search, I refined my scout, and when I was satisfied, I tested it directly on issues from the Issue Selection site. Two passed: KaotoIO/kaoto#2451 and processing/p5.js-website#705. A close runner-up was local-deep-research#4961. After updating my scope rules, I checked both again, along with local-deep-research#4961. Kaoto was rated **ambitious** because restoring the saved schema requires working with `.kaoto` metadata and `DataMapperMetadataService`, not just React state. p5 passed the technical checks, but two people had already asked to work on it and another had opened a PR, so it was unavailable under the course rules.
+
+**My scout rejected #4961, but I chose it anyway.** The issue contains five separate tasks, so it failed the scope check. It also failed the unclaimed check because other contributors had taken tasks 2 and 5. However, on October 24, the owner confirmed that task 3, adding inline group selection, was still unclaimed. The owner also stated that each numbered task could be submitted as its own PR, and the repo's CONTRIBUTING.md allows contributors to claim issues directly. The scout marked the repo as unresponsive because four outside issues from mid-October had gone unanswered, although the owner responded to this issue on the same day.
+
+I rated task 3 **moderate** in difficulty. The owner identified the relevant file and existing design pattern, but I still need to work around the page's autosave rules and update two test files.
+
+This issue fits my interests in frontend development and interaction design. The task is to replace a group-selection card at the bottom of the page with a dropdown beside the relevant field, so users no longer change settings that are hidden in Advanced. It also gives me experience working with an established repo's conventions, including the `esc()` XSS helper, `ldr-` CSS prefix, autosave logic, pre-commit checks, Puppeteer tests, and vitest.
+
+**The main limitation I found is that my scout grades entire issues, not individual tasks.** It rejected #4961 because other tasks were claimed and the overall issue was too broad, even though task 3 was available and had a clear scope. The scope update didn't solve this because the scout still sees the issue as one large task. I would improve it by allowing individual tasks identified by maintainers to be graded separately. I would also make the claim check stricter, since it accepted p5 despite earlier requests to work on it.
+
+**Claim comment:** https://github.com/LearningCircuit/local-deep-research/issues/4961#issuecomment-6391873146
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- **Tool:** `issue-scout`, used to grade Issue Selection site picks and recheck my top choices after the Unit 6 scope update.
+- **Results:** Rejected #4961 on `scope-feasible`, `unclaimed`, and `responsive`, although all repo-level checks passed. Accepted kaoto#2451 (ambitious) and p5.js-website#705.
+- **Challenges:** The scout cannot distinguish individual tasks within a larger issue. It also missed earlier assignment requests on p5 because its claim check only considers statements of active work from the past 30 days.
+- **Changes:** Replaced `scope-bounded` with `scope-feasible`, added difficulty ratings (straightforward, moderate, ambitious), and recorded the changes in `scan-notes.md`. Next, I would add task-level grading and treat unanswered assignment requests as claims.
 
 ---
 
@@ -131,31 +128,38 @@ and add the link the moment your claim lands.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+Windows 11 Home (10.0.26200), Python 3.13.5, Node 22.22.2, and local-deep-research 2.0.0 at upstream `main` commit `0ec4d2998` (2026-10-24), cloned from my fork (ShalomDee/local-deep-research). The project's docs use pdm, which I don't have, so I created a venv and ran `.venv/Scripts/python -m pip install -e . --extra-index-url https://download.pytorch.org/whl/cpu`. I expected `sqlcipher3` to be the hard part on Windows, but a prebuilt 0.6.4 wheel installed cleanly. pytest isn't in the main dependencies, so I installed it separately. Then I ran `npm ci` and `npm run build` in the repo root, and `npm ci` plus `npm run install-browsers` in `tests/ui_tests` (Puppeteer 25.16, Chrome 156). I started the server with `LDR_DISABLE_RATE_LIMITING=true PYTHONUTF8=1 .venv/Scripts/python -m local_deep_research.web.app`. Baseline before any change: `PYTHONPATH=src .venv/Scripts/python -m pytest tests/research_library/zotero/ -q` gave 157 passed, 7 skipped; `npx vitest run tests/js/pages/zotero-runtime.test.js` gave 5 passed; and `node tests/ui_tests/test_zotero_integration_ci.js` gave 17 of 17 passed. I hit two setup problems. The first page load showed "Frontend assets have not been built" until I ran `npm run build`. My first repro script failed with "Cannot find module 'puppeteer'", because Puppeteer is declared in `tests/ui_tests/package.json`, not the root one.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Start the server, register a user, and open `/library/zotero`.
+2. In Advanced options, tick "Enable Zotero integration" and "Use the local desktop app API" (autosave), then reload, so "List groups" is no longer disabled.
+3. Look at the Library row (`#zt-library-type` select plus `#zt-library-id` input) and where the group list appears. I have no Zotero web API key, so I stubbed only `GET /library/api/zotero/groups` with the shape the real route returns: `{"success": true, "groups": [{"id": "5551234", "name": "Lab reading group"}, {"id": "7778899", "name": "Thesis sources"}]}`. With a real key, no stub is needed.
+4. Click group `5551234` in the "Zotero groups" card.
+5. Observed: the group list is a separate card outside the config form, about 520px below the Library field. The Library row has no group dropdown. Clicking the group rewrites `zt-library-type` to `group` and `zt-library-id` to `5551234` inside Advanced options and autosaves ("Zotero settings saved.").
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** none (the reproduction needs no code change; it ran on unmodified upstream `main` at `0ec4d2998`)
+- **Screenshots/logs:** output from my Puppeteer script, which reuses the repo's `tests/ui_tests/test_lib` login helper:
+
+  ```
+  BEFORE: "libraryTypeInsideAdvanced": true, "libraryRowHasGroupSelect": false,
+          "groupsCardIsOutsideForm": true, "libraryType": "user", "libraryId": "",
+          "groupsCard": {"top": 1382}, "libraryTypeField": {"top": 859}, "groupRowsInCard": 2
+  AFTER CLICKING GROUP 5551234 IN BOTTOM CARD:
+          "libraryType": "group", "libraryId": "5551234", "advancedOpen": true, "savedBannerShown": true
+  ```
+
+  Two full-page screenshots: one at page load, and one after the click showing the Library row set to Group / 5551234 next to the saved banner.
+- **My findings:** the behavior slice 3 describes is real on today's `main`. The page's own hint even sends users away from the field: "For a group library, use 'List groups' below to find its ID." Two things matter for the fix. First, the group list needs a configured web API key, so local-API mode can't list groups, and the new dropdown needs a sensible empty or error state. Second, `test_zotero_integration_ci.js` currently asserts that `#zotero-groups-card` exists and is hidden on load, and `zotero-runtime.test.js` mocks the groups endpoint, so both tests have to change with the markup. I also found that the owner's open PR #6762 edits `zotero.html` and both test files (not the group code), so I'll rebase before opening my PR.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check (my unit 2 skill, now running with the wild scope). I graded my claim alone, then the claim and repro report together, with `claude "repro-check: grade my claim comment in claim-draft.md and my repro report in repro-draft.md for issue ..."`.
+- What it produced: the claim alone got accept. On the first combined run, the claim was ready but the report got **reject**: `steps-followable` failed because "Step 4 needs groups in the card, but the report only says the script 'stubs GET /library/api/zotero/groups'; neither repro_groups.js nor the stub response body is in the post". After I revised, all five checks passed and the verdict was accept.
+- Difficulties: the first draft relied on a file next to the report that no reader would have. repro-check also caught that my excerpt left out a `"banner": ""` field that contradicted my "banner appeared" claim. My script's selector had missed the banner, even though the screenshot showed it.
+- What changed: I put the stub's response JSON and a condensed script in the report, fixed the banner check and re-ran (`savedBannerShown: true`), ran the UI contract test to close an open "not yet checked" item, trimmed the claim's date line so it only covers my next report, and rewrote the claim's middle paragraph around my real next step, because the voice guard stopped the old implementation sentence and the reproduction was already done.
 
 ---
 
